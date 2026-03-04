@@ -93,8 +93,9 @@ Get an API key at [quantumtoolkit.com](https://quantumtoolkit.com).
 | `fail_on_vulnerable` | `true` | Exit 1 if vulnerabilities found above threshold |
 | `severity_threshold` | `medium` | Minimum severity to report: `critical`, `high`, `medium`, `low` |
 | `report_format` | `annotations` | Output format: `annotations`, `sarif`, `json` |
-| `pqc_api_key` | — | API key for paid auto-fix tier |
+| `pqc_api_key` | — | API key for paid auto-fix tier; also enables scan results to appear in the platform dashboard |
 | `migration_mode` | `pqc_only` | Migration strategy: `pqc_only`, `hybrid`, `migration` |
+| `scan_scope` | `changed` | Files to scan: `changed` (only files in this push/PR) or `all` (entire repo) |
 | `scan_id` | — | Platform scan ID (set automatically by platform integrations) |
 
 ## Detected algorithms
