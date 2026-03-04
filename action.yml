@@ -1,0 +1,50 @@
+name: 'PQC Vulnerability Scanner'
+description: 'Detect and auto-fix quantum-vulnerable cryptography (RSA, ECC, DES, etc.)'
+author: 'QuantumToolkit'
+
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  paths:
+    description: 'Glob patterns to scan (space-separated)'
+    default: '**/*.py **/*.java'
+    required: false
+  fail_on_vulnerable:
+    description: 'Fail the build if vulnerable algorithms are found'
+    default: 'true'
+    required: false
+  severity_threshold:
+    description: 'Minimum severity to report: critical, high, medium, low'
+    default: 'medium'
+    required: false
+  pqc_api_key:
+    description: 'API key for auto-remediation (paid tier). If set, opens a fix PR automatically.'
+    required: false
+  migration_mode:
+    description: 'Transformation strategy: pqc_only, hybrid, migration'
+    default: 'pqc_only'
+    required: false
+  report_format:
+    description: 'Output format: annotations (default), sarif, json'
+    default: 'annotations'
+    required: false
+  scan_id:
+    description: 'Platform scan ID to link the fix PR back to (set automatically when triggered by platform)'
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/ashnigam/pqc-scanner:v1'
+  env:
+    INPUT_PATHS: ${{ inputs.paths }}
+    INPUT_FAIL_ON_VULNERABLE: ${{ inputs.fail_on_vulnerable }}
+    INPUT_SEVERITY_THRESHOLD: ${{ inputs.severity_threshold }}
+    INPUT_PQC_API_KEY: ${{ inputs.pqc_api_key }}
+    INPUT_MIGRATION_MODE: ${{ inputs.migration_mode }}
+    INPUT_REPORT_FORMAT: ${{ inputs.report_format }}
+    INPUT_SCAN_ID: ${{ inputs.scan_id }}
+    # GITHUB_TOKEN is set automatically by Actions in the container environment.
+    # Do NOT map github.token here — it is not valid in runs.env at action definition level.
+    # Read it from os.environ['GITHUB_TOKEN'] in the entrypoint.
